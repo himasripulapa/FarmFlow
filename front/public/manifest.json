@@ -1,0 +1,16 @@
+{
+  "short_name": "FarmFlow",
+  "name": "FarmFlow - Agricultural Supply Chain Tracking",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192 512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#FAFAF5",
+  "theme_color": "#2E7D32",
+  "display": "standalone",
+  "orientation": "portrait"
+}

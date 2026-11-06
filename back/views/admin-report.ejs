@@ -1,0 +1,105 @@
+<div class="card">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border-color); padding-bottom: 1rem;">
+    <div>
+      <h1 style="color: var(--primary-green); font-size: 1.75rem; font-weight: 800;">Executive Supply Chain Report</h1>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.25rem;">Live MongoDB Atlas Aggregation Data for System Administrators</p>
+    </div>
+    <button onclick="window.print()" class="btn btn-golden no-print">🖨️ Print / Save PDF</button>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+    <div style="background: #E8F5E9; padding: 1.25rem; border-radius: 12px; border-left: 5px solid var(--primary-green);">
+      <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--primary-dark);">Total Tracked Batches</div>
+      <div style="font-size: 2rem; font-weight: 900; color: var(--primary-dark);"><%= summary.totalBatches %></div>
+      <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;"><strong><%= summary.inTransitCount || 0 %></strong> In Transit</div>
+    </div>
+    <div style="background: #FFF8E1; padding: 1.25rem; border-radius: 12px; border-left: 5px solid var(--golden-accent);">
+      <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #825400;">Total Produce Volume</div>
+      <div style="font-size: 2rem; font-weight: 900; color: #825400;"><%= summary.totalQuantity.toLocaleString() %> <span style="font-size: 1rem;">kg</span></div>
+    </div>
+    <div style="background: #E3F2FD; padding: 1.25rem; border-radius: 12px; border-left: 5px solid #1976D2;">
+      <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #0D47A1;">Realized Revenue (Paid)</div>
+      <div style="font-size: 2rem; font-weight: 900; color: #0D47A1;">₹<%= (summary.totalPaidRevenue || 0).toLocaleString() %></div>
+      <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Settled transactions</div>
+    </div>
+    <div style="background: #F3E5F5; padding: 1.25rem; border-radius: 12px; border-left: 5px solid #7B1FA2;">
+      <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #4A148C;">Expected Pipeline Value</div>
+      <div style="font-size: 2rem; font-weight: 900; color: #4A148C;">₹<%= (summary.expectedValue || 0).toLocaleString() %></div>
+      <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Unsold batches in custody</div>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+    <div>
+      <h3 style="color: var(--primary-dark); margin-bottom: 0.5rem;">Batch Status Throughput (Funnel)</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Supply Chain Status</th>
+            <th style="text-align: right;">Batch Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (summary.stageFunnel && summary.stageFunnel.length > 0) { %>
+            <% summary.stageFunnel.forEach(function(item) { %>
+              <tr>
+                <td><strong><%= item.stage %></strong></td>
+                <td style="text-align: right; font-weight: 700;"><%= item.count %></td>
+              </tr>
+            <% }); %>
+          <% } else { %>
+            <tr><td colspan="2" style="text-align: center; color: var(--text-muted);">No batch status data yet</td></tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+
+    <div>
+      <h3 style="color: var(--primary-dark); margin-bottom: 0.5rem;">Volume Distribution By Crop</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Crop Name</th>
+            <th style="text-align: right;">Total Quantity (kg)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (summary.cropDonut && summary.cropDonut.length > 0) { %>
+            <% summary.cropDonut.forEach(function(item) { %>
+              <tr>
+                <td><strong><%= item.name %></strong></td>
+                <td style="text-align: right; font-weight: 700;"><%= item.value.toLocaleString() %></td>
+              </tr>
+            <% }); %>
+          <% } else { %>
+            <tr><td colspan="2" style="text-align: center; color: var(--text-muted);">No crop data yet</td></tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div>
+    <h3 style="color: var(--primary-dark); margin-bottom: 0.5rem;">Monthly Throughput Trend</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Period</th>
+          <th style="text-align: right;">Quantity Volume (kg)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (summary.monthlyTrend && summary.monthlyTrend.length > 0) { %>
+          <% summary.monthlyTrend.forEach(function(item) { %>
+            <tr>
+              <td><%= item.month %></td>
+              <td style="text-align: right; font-weight: 700;"><%= item.volume.toLocaleString() %></td>
+            </tr>
+          <% }); %>
+        <% } else { %>
+          <tr><td colspan="2" style="text-align: center; color: var(--text-muted);">No monthly trend data recorded</td></tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>

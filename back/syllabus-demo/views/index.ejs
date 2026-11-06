@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%= title %></title>
+  <style>
+    body { font-family: sans-serif; background: #FAF9F5; padding: 2rem; }
+    .card { background: white; border-radius: 12px; padding: 2rem; max-width: 600px; margin: 0 auto; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    h1 { color: #2E7D32; }
+    ul { list-style: none; padding: 0; }
+    li { padding: 0.5rem 0; border-bottom: 1px solid #EEE; display: flex; justify-content: space-between; }
+    .tag { background: #E8F5E9; color: #1B5E20; padding: 2px 8px; border-radius: 4px; font-weight: bold; font-size: 0.8rem; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1><%= heading %></h1>
+    <p><%= description %></p>
+    <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid #DDD;" />
+
+    <h3>Tracked Crops (<%= crops.length %> items)</h3>
+    <ul>
+      <% crops.forEach(function(crop) { %>
+        <li>
+          <span><strong><%= crop.name %></strong> - ₹<%= crop.price %>/kg</span>
+          <span class="tag"><%= crop.quality %></span>
+        </li>
+      <% }); %>
+    </ul>
+  </div>
+</body>
+</html>

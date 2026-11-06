@@ -1,0 +1,62 @@
+<div class="card" style="max-width: 650px; margin: 0 auto;">
+  <% if (typeof submitted !== 'undefined' && submitted) { %>
+    <div style="text-align: center; padding: 2rem 1rem;">
+      <div style="font-size: 3rem; margin-bottom: 1rem;">✅</div>
+      <h1 style="color: var(--primary-green); font-size: 1.75rem; margin-bottom: 0.5rem;">Complaint Registered Successfully</h1>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">
+        Your feedback for Batch <strong style="font-family: monospace; color: var(--primary-dark);"><%= batch.batchId %></strong> (<%= batch.crop.name %>) has been securely logged into the traceability audit ledger.
+      </p>
+      <div style="background: #E8F5E9; padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; text-align: left; font-size: 0.85rem;">
+        <p><strong>Complainant:</strong> <%= complaint.name %></p>
+        <p><strong>Category:</strong> <%= complaint.issueType %></p>
+        <p><strong>Logged Details:</strong> <%= complaint.description %></p>
+      </div>
+      <a href="/views/certificate/<%= batch.batchId %>" class="btn btn-primary">View Batch Certificate</a>
+    </div>
+  <% } else { %>
+    <div style="border-bottom: 2px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+      <h1 style="color: var(--primary-dark); font-size: 1.5rem;">Lodge Batch Complaint / Feedback</h1>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem;">
+        Batch: <strong style="color: var(--primary-green); font-family: monospace;"><%= batch.batchId %></strong> &bull; Crop: <strong><%= batch.crop.name %> (<%= batch.crop.variety %>)</strong>
+      </p>
+    </div>
+
+    <form method="POST" action="/views/complaint/<%= batch.batchId %>" style="display: flex; flex-direction: column; gap: 1.25rem;">
+      <div>
+        <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.25rem; color: var(--text-main);">Your Full Name</label>
+        <input type="text" name="name" required placeholder="e.g. Ramesh Kumar" style="width: 100%; padding: 0.75rem; border-radius: 10px; border: 1px solid var(--border-color); font-size: 0.9rem;" />
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div>
+          <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.25rem; color: var(--text-main);">Email Address</label>
+          <input type="email" name="email" placeholder="ramesh@example.com" style="width: 100%; padding: 0.75rem; border-radius: 10px; border: 1px solid var(--border-color); font-size: 0.9rem;" />
+        </div>
+        <div>
+          <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.25rem; color: var(--text-main);">Mobile Number</label>
+          <input type="tel" name="phone" placeholder="9876543210" style="width: 100%; padding: 0.75rem; border-radius: 10px; border: 1px solid var(--border-color); font-size: 0.9rem;" />
+        </div>
+      </div>
+
+      <div>
+        <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.25rem; color: var(--text-main);">Issue Classification</label>
+        <select name="issueType" style="width: 100%; padding: 0.75rem; border-radius: 10px; border: 1px solid var(--border-color); font-size: 0.9rem; font-weight: 600;">
+          <option value="Quality & Freshness">Produce Quality / Spoilage</option>
+          <option value="Packaging & Moisture">Moisture / Weight Discrepancy</option>
+          <option value="Labeling / Certification">Incorrect Origin or Grade Label</option>
+          <option value="Transit Delay">Delivery / Temperature Abuse</option>
+          <option value="Other">Other Regulatory Observation</option>
+        </select>
+      </div>
+
+      <div>
+        <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.25rem; color: var(--text-main);">Detailed Description of Issue</label>
+        <textarea name="description" rows="4" required placeholder="Describe the physical condition, batch observation or verification concern..." style="width: 100%; padding: 0.75rem; border-radius: 10px; border: 1px solid var(--border-color); font-size: 0.9rem;"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-golden" style="margin-top: 0.5rem; width: 100%; padding: 0.85rem; font-size: 1rem;">
+        Submit Verified Complaint
+      </button>
+    </form>
+  <% } %>
+</div>

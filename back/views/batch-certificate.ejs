@@ -1,0 +1,67 @@
+<div class="card" style="border: 4px double var(--primary-green); padding: 3rem; background: #FFFCF7;">
+  <div style="text-align: center; border-bottom: 2px solid var(--primary-green); padding-bottom: 1.5rem; margin-bottom: 2rem;">
+    <div style="font-size: 0.85rem; font-weight: 800; letter-spacing: 2px; color: var(--golden-accent); text-transform: uppercase;">Agricultural Traceability Certification</div>
+    <h1 style="font-size: 2.2rem; color: var(--primary-dark); font-weight: 900; margin-top: 0.5rem;">Digital Authenticity Certificate</h1>
+    <div style="font-size: 1rem; color: var(--text-muted); margin-top: 0.25rem;">Batch Identifier: <strong style="font-family: monospace; color: var(--primary-dark);"><%= batch.batchId %></strong></div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+    <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color);">
+      <h3 style="color: var(--primary-green); font-size: 1.1rem; margin-bottom: 1rem;">🌾 Crop Specifications</h3>
+      <p style="margin-bottom: 0.5rem;"><strong>Crop:</strong> <%= batch.crop.name %> (<%= batch.crop.variety %>)</p>
+      <p style="margin-bottom: 0.5rem;"><strong>Category:</strong> <%= batch.crop.category %></p>
+      <p style="margin-bottom: 0.5rem;"><strong>Quantity:</strong> <%= batch.quantity %> <%= batch.unit %></p>
+      <p style="margin-bottom: 0.5rem;"><strong>Quality Grade:</strong> Grade <%= batch.qualityGrade %></p>
+      <p style="margin-bottom: 0.5rem;"><strong>Organic Certified:</strong> <%= batch.organic ? 'Yes (100% Organic)' : 'Conventional' %></p>
+      <p style="margin-bottom: 0.5rem;"><strong>Harvest Date:</strong> <%= batch.harvestDate %></p>
+    </div>
+
+    <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color);">
+      <h3 style="color: var(--primary-green); font-size: 1.1rem; margin-bottom: 1rem;">👨‍🌾 Registered Producer</h3>
+      <p style="margin-bottom: 0.5rem;"><strong>Farmer Name:</strong> <%= batch.farmer.name %></p>
+      <p style="margin-bottom: 0.5rem;"><strong>Origin:</strong> <%= batch.farmer.village ? batch.farmer.village + ', ' : '' %><%= batch.farmer.district %>, <%= batch.farmer.state %></p>
+      <p style="margin-bottom: 0.5rem;"><strong>Registered Phone:</strong> <%= batch.farmer.phone %></p>
+      <p style="margin-bottom: 0.5rem;"><strong>Current Status:</strong> <span style="background: #E8F5E9; color: var(--primary-dark); padding: 3px 8px; border-radius: 6px; font-weight: 700;"><%= batch.status %></span></p>
+      <p style="margin-bottom: 0.5rem;"><strong>Carbon Saved:</strong> <%= batch.carbonFootprint ? batch.carbonFootprint.co2SavedKg : 12 %> kg CO₂</p>
+    </div>
+  </div>
+
+  <div style="margin-bottom: 2rem;">
+    <h3 style="color: var(--primary-green); margin-bottom: 1rem;">📍 Verified Custody History</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Stage</th>
+          <th>Handler</th>
+          <th>Role</th>
+          <th>Location</th>
+          <th>Timestamp</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (batch.stageHistory && batch.stageHistory.length > 0) { %>
+          <% batch.stageHistory.forEach(function(item) { %>
+            <tr>
+              <td><strong><%= item.stage %></strong></td>
+              <td><%= item.handlerName %></td>
+              <td><%= item.handlerRole %></td>
+              <td><%= item.location ? item.location.name : 'Registered Station' %></td>
+              <td><%= new Date(item.timestamp).toLocaleString() %></td>
+              <td><span style="font-weight: 700; color: var(--primary-green);"><%= item.status %></span></td>
+            </tr>
+          <% }); %>
+        <% } else { %>
+          <tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No stage transitions logged yet</td></tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="display: flex; justify-content: space-between; align-items: center; border-top: 2px solid var(--border-color); padding-top: 1.5rem;" class="no-print">
+    <div style="font-size: 0.85rem; color: var(--text-muted);">
+      Verified tamper-evident record stored on MongoDB Atlas.
+    </div>
+    <button onclick="window.print()" class="btn btn-primary">🖨️ Print Certificate</button>
+  </div>
+</div>
